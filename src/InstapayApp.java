@@ -42,6 +42,10 @@ public class InstapayApp {
     private static void registerUser(Scanner scanner) {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
+        if (instapaySystem.isUsernameTaken(username)) {
+            System.out.println("Username is already taken. Please try again.");
+            return;
+        }
         System.out.println("*Password must be at least 8 characters long and include uppercase, lowercase, digits, and special characters.*");
         System.out.println("Enter password: ");
         String password = scanner.nextLine();

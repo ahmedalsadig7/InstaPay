@@ -97,4 +97,8 @@ public class InstapaySystem {
             }
             return false;
         }
+
+    public boolean isUsernameTaken(String username) {
+        return userDatabase.containsKey(username);
+    }
 }
