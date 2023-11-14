@@ -1,4 +1,4 @@
-public class BankAccountService {
+public class BankAccountService implements BankAccountServiceProvider {
     public boolean verifyBankAccount(String bankAccountNumber) {
         if (bankAccountNumber != null) {
             System.out.println("Bank account number " + bankAccountNumber + " verified successfully!");

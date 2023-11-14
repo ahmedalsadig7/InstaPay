@@ -3,9 +3,13 @@ import java.util.Map;
 
 public class InstapaySystem {
     private Map<String, User> userDatabase;
+    private OTPServiceProvider otpService;
+    private BankAccountServiceProvider bankAccountService;
 
-    public InstapaySystem() {
+    public InstapaySystem(OTPServiceProvider otpService, BankAccountServiceProvider bankAccountService) {
         this.userDatabase = new HashMap<>();
+        this.otpService = otpService;
+        this.bankAccountService = bankAccountService;
     }
 
     public boolean registerUser(String username, String password, String mobileNumber, boolean isBankUser, String bankAccountNumber, String walletProvider) {

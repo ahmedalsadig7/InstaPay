@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class OTPService {
+public class OTPService implements OTPServiceProvider {
     private final Map<String, Integer> otpStorage = new HashMap<>();
     private final Random random = new Random();
 
