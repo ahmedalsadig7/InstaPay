@@ -19,6 +19,8 @@ public class User {
         this.balance = ThreadLocalRandom.current().nextDouble(1000, 5000); // Assign a random balance
     }
 
+
+
     public String getUsername() {
         return username;
     }

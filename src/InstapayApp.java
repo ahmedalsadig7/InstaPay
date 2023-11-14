@@ -42,8 +42,13 @@ public class InstapayApp {
     private static void registerUser(Scanner scanner) {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine(); // Hash this password in a real application
+        System.out.println("*Password must be at least 8 characters long and include uppercase, lowercase, digits, and special characters.*");
+        System.out.println("Enter password: ");
+        String password = scanner.nextLine();
+        if (!isPasswordComplex(password)) {
+            System.out.println("Password is not complex enough. It must be at least 8 characters long and include uppercase, lowercase, digits, and special characters.");
+            return;
+        }
         System.out.print("Enter mobile number: ");
         String mobileNumber = scanner.nextLine();
         System.out.print("Will you be registering with a bank account? (yes/no): ");
@@ -78,6 +83,21 @@ public class InstapayApp {
         } else {
             System.out.println("Incorrect OTP. Registration failed.");
         }
+    }
+
+        //Checks if the password is complex enough
+    private static boolean isPasswordComplex(String password) {
+        if (password.length() < 8) {
+            return false; // Password length should be at least 8 characters
+        }
+        boolean hasUpper = false, hasLower = false, hasDigit = false, hasSpecial = false;
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) hasUpper = true;
+            else if (Character.isLowerCase(c)) hasLower = true;
+            else if (Character.isDigit(c)) hasDigit = true;
+            else hasSpecial = true;
+        }
+        return hasUpper && hasLower && hasDigit && hasSpecial;
     }
 
     // Login
