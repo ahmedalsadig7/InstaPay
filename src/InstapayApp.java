@@ -1,10 +1,13 @@
+import java.util.Random;
 import java.util.Scanner;
 
+// InstapayApp class
 public class InstapayApp {
     private static final OTPService otpService = new OTPService();
     private static final BankAccountService bankAccountService = new BankAccountService();
     private static final InstapaySystem instapaySystem = new InstapaySystem(otpService, bankAccountService);
 
+    // Main menu
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -35,6 +38,7 @@ public class InstapayApp {
         }
     }
 
+    // Registration
     private static void registerUser(Scanner scanner) {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
@@ -76,6 +80,7 @@ public class InstapayApp {
         }
     }
 
+    // Login
     private static void loginUser(Scanner scanner) {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
@@ -91,6 +96,7 @@ public class InstapayApp {
         }
     }
 
+    // User actions
     private static void userActions(User user, Scanner scanner) {
         boolean isRunning = true;
         while (isRunning) {
@@ -102,14 +108,14 @@ public class InstapayApp {
             System.out.print("Choose an action: ");
 
             int action = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline
+            scanner.nextLine();
 
             switch (action) {
                 case 1:
                     user.displayBalance();
                     break;
                 case 2:
-                        performTransfer(scanner, user);
+                    performTransfer(scanner, user);
                     break;
                 case 3:
                     payBills(scanner, user);
@@ -124,6 +130,7 @@ public class InstapayApp {
         }
     }
 
+    // Transfers
     private static void performTransfer(Scanner scanner, User user) {
         System.out.println("Select transfer type:");
         System.out.println("1. Transfer to Wallet");
@@ -166,6 +173,7 @@ public class InstapayApp {
         }
     }
 
+    // Bills
     private static void payBills(Scanner scanner, User user) {
         System.out.println("Which bill would you like to pay?");
         System.out.println("1. Gas");
@@ -176,36 +184,57 @@ public class InstapayApp {
         int billType = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
-        System.out.print("Enter the bill amount: ");
-        double amount = scanner.nextDouble();
-        scanner.nextLine(); // Consume newline
+        String billTypeName = getBillTypeName(billType);
+        double billAmount = generateRandomBillAmount(billType); // Generate a random bill amount
 
-        String billTypeName;
-        switch (billType) {
-            case 1:
-                billTypeName = "Gas";
-                break;
-            case 2:
-                billTypeName = "Electricity";
-                break;
-            case 3:
-                billTypeName = "Water";
-                break;
-            case 4:
-                billTypeName = "Telecom & Internet";
-                break;
-            default:
-                System.out.println("Invalid bill type selected.");
-                return;
-        }
+        System.out.printf("Your %s bill amount is $%.2f%n", billTypeName, billAmount);
+        System.out.print("Do you want to proceed with the payment? (yes/no): ");
+        String confirmation = scanner.nextLine();
 
-        Bill bill = new Bill(billTypeName, amount);
-        boolean billPaid = instapaySystem.processBillPayment(user.getUsername(), bill);
-        if (billPaid) {
-            System.out.println("Your " + billTypeName + " bill has been paid.");
-            user.displayBalance();
+        if ("yes".equalsIgnoreCase(confirmation)) {
+            if (user.payBill(billAmount)) {
+                System.out.println("Your " + billTypeName + " bill has been paid.");
+                user.displayBalance();
+            } else {
+                System.out.println("Failed to pay bill. Insufficient balance.");
+            }
         } else {
-            System.out.println("Failed to pay bill. Check your balance and try again.");
+            System.out.println("Bill payment cancelled.");
         }
     }
+
+    private static String getBillTypeName(int billType) {
+        switch (billType) {
+            case 1:
+                return "Gas";
+            case 2:
+                return "Electricity";
+            case 3:
+                return "Water";
+            case 4:
+                return "Telecom & Internet";
+            default:
+                return "Unknown";
+        }
+    }
+
+    private static double generateRandomBillAmount(int billType) {
+        Random random = new Random();
+        switch (billType) {
+            case 1:
+                return 50 + random.nextDouble() * 100; // Gas
+            case 2:
+                return 30 + random.nextDouble() * 150; // Electricity
+            case 3:
+                return 20 + random.nextDouble() * 80;  // Water
+            case 4:
+                return 15 + random.nextDouble() * 100; // Telecom & Internet
+            default:
+                return 0;
+        }
+    }
+
 }
+
+
+

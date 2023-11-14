@@ -2,6 +2,7 @@ public class Bill {
     private String billType;
     private double amount;
 
+    // Constructor for Bill class
     public Bill(String billType, double amount) {
         this.billType = billType;
         this.amount = amount;
@@ -24,6 +25,7 @@ public class Bill {
         this.amount = amount;
     }
 
+    // toString method for printing bill details in a readable format
     @Override
     public String toString() {
         return "Bill{" +
